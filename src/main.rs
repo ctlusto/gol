@@ -38,7 +38,6 @@ type Pos = (usize, usize);
 
 type Cells = Vec<bool>;
 
-#[derive(Debug)]
 struct Grid {
     cells: Cells,
     rows: usize,
