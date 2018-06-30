@@ -10,6 +10,7 @@ const DENSITY: f64 = 0.5;
 const DELAY: u64 = 150;
 const ALIVE_CHAR: char = 'O';
 const DEAD_CHAR: char = '\u{00b7}';
+const NEWLINE_CHAR: char = '\n';
 
 fn main() {
     let mut g = Grid::new(W, H).randomize();
@@ -79,6 +80,7 @@ impl Grid {
     fn should_live(&self, idx: &usize) -> bool {
         let pos: Pos = self.idx_to_pos(&idx);
         let live_neighbors: usize = self.count_live_neighbors(&pos);
+
         live_neighbors == 3 || (self.is_alive(&pos) && live_neighbors == 2)
     }
 
@@ -146,7 +148,7 @@ impl Grid {
                     false => s.push(DEAD_CHAR),
                 }
             }
-            s.push('\n');
+            s.push(NEWLINE_CHAR);
         }
         println!("{}", s);
     }
