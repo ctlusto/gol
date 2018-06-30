@@ -65,12 +65,11 @@ impl Grid {
     }
 
     fn next_generation(&self) -> Cells {
-        let mut new_cells: Cells = Vec::new();
-        for idx in 0..self.cells.len() {
-            new_cells.push(self.should_live(idx));
-        }
-
-        new_cells
+        self.cells
+            .iter()
+            .enumerate()
+            .map(|(idx, _)| self.should_live(&idx))
+            .collect()
     }
 
     fn is_alive(&self, pos: &Pos) -> bool {
@@ -78,7 +77,7 @@ impl Grid {
         self.cells[idx]
     }
 
-    fn should_live(&self, idx: usize) -> bool {
+    fn should_live(&self, idx: &usize) -> bool {
         let pos: Pos = self.idx_to_pos(&idx);
         let live_neighbors: usize = self.count_live_neighbors(&pos);
         live_neighbors == 3 || (self.is_alive(&pos) && live_neighbors == 2)
@@ -131,12 +130,12 @@ impl Grid {
     }
 
     fn randomize(&self) -> Grid {
-        let mut cells: Cells = Vec::new();
-        for _ in 0..self.cells.len() {
-            cells.push(get_random_cell_status(DENSITY));
-        }
+        let new_cells: Cells = self.cells
+            .iter()
+            .map(|_| get_random_cell_status(DENSITY))
+            .collect();
 
-        self.update(cells)
+        self.update(new_cells)
     }
 
     fn render(&self) {
